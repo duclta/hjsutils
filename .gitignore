@@ -1,0 +1,8 @@
+.git/
+node_modules/
+dist/
+module/
+logs/
+.env
+pnpm-lock.yaml
+yarn.lock
