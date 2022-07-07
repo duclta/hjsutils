@@ -1,4 +1,4 @@
-export type DomainEvent<T> = {
+export declare type DomainEvent<T> = {
     aggregateId: any;
     type: string;
     meta?: T;

@@ -1,40 +1,34 @@
-import { Entity } from './entity';
-import { DomainEvent } from './event';
-
-export interface DomainEventHandler {
-    publish(event: DomainEvent<any>): void;
-}
-
-export abstract class AggregateRoot<T> extends Entity<T> {
-    private _domainEvents: DomainEvent<T>[] = [];
-
-    protected constructor(id?: string, props?: T) {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.AggregateRoot = void 0;
+const entity_1 = require("./entity");
+class AggregateRoot extends entity_1.Entity {
+    constructor(id, props) {
         super(id, props);
+        this._domainEvents = [];
     }
-
-    get domainEvents(): DomainEvent<T>[] {
+    get domainEvents() {
         return this._domainEvents;
     }
-
-    protected addDomainEvent(domainEvent: DomainEvent<T>): void {
+    addDomainEvent(domainEvent) {
         this._domainEvents.push(domainEvent);
         console.info(`[Domain Event Created]:`, domainEvent);
     }
-
-    protected clearEvents(): void {
+    clearEvents() {
         this._domainEvents = [];
     }
-
-    public dispatchDomainEvents(eventHandler: DomainEventHandler) {
+    dispatchDomainEvents(eventHandler) {
         try {
             this._domainEvents.forEach((event) => {
                 eventHandler.publish(event);
             });
             console.info(`[Domain Event Published]:`, this.domainEvents);
             this.clearEvents();
-        } catch (err) {
+        }
+        catch (err) {
             console.error(`[Domain Event Publish Failed]:`, err);
             throw new Error(`Domain Event Publish Failed!`);
         }
     }
 }
+exports.AggregateRoot = AggregateRoot;
